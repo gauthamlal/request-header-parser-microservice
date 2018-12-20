@@ -5,8 +5,12 @@ const cors = require('cors');
 const app = express();
 
 app.get('/api/whoami', (req, res) => {
-  console.log(req);
-  res.json({"name":req.header});
+  let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  res.json({
+    "ipaddress": ip,
+    "language": req.headers['accept-language'],
+    "software": req.headers['user-agent']
+  });
 });
 
 app.listen(port, () => {
